@@ -1,0 +1,237 @@
+CREATE TABLE person 
+  ( 
+     person_code varchar(3) PRIMARY KEY, 
+     first_name  varchar(15), 
+     last_name   varchar(20), 
+     hiredate    DATE 
+  ); 
+
+CREATE TABLE purchase 
+  ( 
+     product_name  varchar(25), 
+     salesperson   varchar(3), 
+     purchase_date DATE, 
+     quantity      numeric(4, 2) 
+  ); 
+
+CREATE TABLE product 
+  ( 
+     product_name     varchar(25) PRIMARY KEY, 
+     product_price    numeric(8, 2), 
+     quantity_on_hand numeric(5, 0), 
+     laststockdate    DATE 
+  ); 
+
+CREATE TABLE old_item 
+  ( 
+     item_id   CHAR(20), 
+     item_desc CHAR(25) 
+  ); 
+
+CREATE TABLE purchase_archive 
+  ( 
+     product_name  varchar (25), 
+     salesperson   varchar(3), 
+     purchase_date DATE, 
+     quantity      numeric (4, 2) 
+  ); 
+
+ALTER TABLE purchase 
+  ADD CONSTRAINT purchase_fk_person FOREIGN KEY (salesperson) REFERENCES person; 
+
+ALTER TABLE purchase 
+  ADD CONSTRAINT purchase_fk_product FOREIGN KEY (product_name) REFERENCES product; 
+
+
+
+
+
+INSERT INTO product
+VALUES      ('Small Widget',
+             99,
+             1,
+             '15-JAN-2011');
+
+INSERT INTO product
+VALUES      ('Medium Widget',
+             75,
+             1000,
+             '15-JAN-2010');
+
+INSERT INTO product
+VALUES      ('Chrome Phoobar',
+             50,
+             100,
+             '15-JAN-2011');
+
+INSERT INTO product
+VALUES      ('Round Chrome Snaphoo',
+             25,
+             10000,
+             NULL);
+
+INSERT INTO product
+VALUES      ('Extra Huge Mega Phoobar +',
+             9.95,
+             1234,
+             '15-JAN-2012');
+
+
+INSERT INTO product
+VALUES      ('Square Zinculator',
+             45,
+             1,
+             '31-DEC-2010');
+
+INSERT INTO product
+VALUES      ('Large Widget',
+             NULL,
+             5,
+             '11-JAN-2011');
+INSERT INTO person
+VALUES      ( 'CA',
+             'Charlene',
+             'Atlas',
+             '01-FEB-2010');
+
+INSERT INTO person
+VALUES      ('GA',
+             'Gary',
+             'Anderson',
+             '15-FEB-2010');
+
+INSERT INTO person
+VALUES      ( 'BB',
+             'Bobby',
+             'Barkenhagen',
+             '28-FEB-2010');
+
+INSERT INTO person
+VALUES      ( 'LB',
+             'Laren',
+             'Baxter',
+             '01-MAR-2010');
+
+INSERT INTO person 
+VALUES      ('JS', 
+             'John', 
+             'Smith', 
+             '15-FEB-2002'); 
+
+INSERT INTO person 
+VALUES      ('DS', 
+             'Dany', 
+             'Smith', 
+             '15-FEB-2002'); 
+
+INSERT INTO purchase
+VALUES      ('Small Widget',
+             'CA',
+             '14-JUL-2011',
+             1);
+
+INSERT INTO purchase
+VALUES      ('Medium Widget',
+             'BB',
+             '14-JUL-2011',
+             75);
+
+INSERT INTO purchase
+VALUES      ('Chrome Phoobar',
+             'GA',
+             '14-JUL-2011',
+             2);
+
+INSERT INTO purchase
+VALUES      ('Small Widget',
+             'GA',
+             '15-JUL-2011',
+             8);
+
+INSERT INTO purchase
+VALUES      ('Medium Widget',
+             'LB',
+             '15-JUL-2011',
+             20);
+
+INSERT INTO purchase
+VALUES      ('Round Chrome Snaphoo',
+             'CA',
+             '16-JUL-2011',
+             5);
+
+INSERT INTO old_item 
+VALUES      ('MSC-101', 
+             'Bottle, Small'); 
+
+INSERT INTO old_item 
+VALUES      ('MSC-102', 
+             'Bottle, Large'); 
+
+
+INSERT INTO old_item 
+VALUES      ('SPB-101', 
+             'Box, Small'); 
+
+INSERT INTO old_item 
+VALUES      ('SPB-102', 
+             'Box, Large'); 
+
+INSERT INTO purchase_archive 
+VALUES      ('Round Snaphoo', 
+             'BB', 
+             '21-JUN-01', 
+             10); 
+
+INSERT INTO purchase_archive 
+VALUES      ('Large Harf linger', 
+             'GA', 
+             '22-JUN-01', 
+             50); 
+
+INSERT INTO purchase_archive 
+VALUES      ( 'Medium Wodget', 
+             'LB', 
+             '23-JUN-01', 
+             20); 
+
+INSERT INTO purchase_archive 
+VALUES      ('Small Widget', 
+             'ZZ', 
+             '24-JUN-02 ', 
+             80); 
+
+INSERT INTO purchase_archive 
+VALUES      ('Chrome Phoobar', 
+             'CA', 
+             '25-JUN-02', 
+             2); 
+
+INSERT INTO purchase_archive 
+VALUES      ('Small Widget', 
+             'JT', 
+             '26-JUN-02', 
+             50); 
+
+
+--****************************************Работаем ниже этой строки******************************************************--
+
+SELECT product_price * 1.15 FROM product;
+
+SELECT COUNT(product_name)
+FROM product;
+
+SELECT COUNT(*) from product WHERE product_price is NULL;
+
+SELECT MAX(product_price), MIN(product_price) from product;
+
+SELECT product_price,
+            SUM(product_price)*quantity "Total money"           
+FROM product, purchase
+GROUP BY quantity, product_price;
+
+SELECT product_price,
+            SUM(product_price)*quantity "Total money"           
+FROM product, purchase
+GROUP BY quantity, product_price
+HAVING SUM((product_price)*quantity) > 125;

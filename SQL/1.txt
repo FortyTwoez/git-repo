@@ -1,0 +1,43 @@
+CREATE TABLE dept (
+dept_id INTEGER NOT NULL PRIMARY KEY,
+dname VARCHAR(20)
+);
+
+CREATE TABLE emp (
+emp_id INTEGER,
+dept_id INTEGER,
+FOREIGN KEY (dept_id) REFERENCES dept (dept_id),
+ename VARCHAR(15),
+salary NUMERIC(6,2)
+                  );
+
+INSERT INTO dept (dept_id, dname) VALUES (1, 'Marketing');
+INSERT INTO dept (dept_id, dname) VALUES (2, 'RD');
+INSERT INTO emp (emp_id, dept_id, ename, salary) VALUES (1, 1, 'James', 1000);
+INSERT INTO emp (emp_id, dept_id, ename, salary) VALUES (2, 2, 'Smith', 2000);
+
+CREATE TABLE dept_arch (
+dept_id INTEGER NOT NULL PRIMARY KEY,
+dname VARCHAR(20)
+);
+
+INSERT INTO dept_arch
+SELECT * FROM dept
+
+UPDATE emp 
+SET salary = salary * 1.15 WHERE ename = 'Smith';
+
+/*Уже существует запись с ID=2
+
+salary - numeric, а не varchar */
+
+UPDATE dept
+SET dname = 'RandD' WHERE dept_id = 2;
+
+DELETE FROM emp
+WHERE emp_id = 1;
+
+TRUNCATE table emp;
+
+DROP table emp;
+
